@@ -15,4 +15,9 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 from keras.utils import plot_model
 
-print("funciono la instalacion")
+#%% Leemos los datos del archivo csv que viene en el paquete de datos
+data = pd.read_csv('metadata/sound_metadata.csv')
+
+
+
+
