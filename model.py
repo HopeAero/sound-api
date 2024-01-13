@@ -14,3 +14,5 @@ import random
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 from keras.utils import plot_model
+
+print("funciono la instalacion")
