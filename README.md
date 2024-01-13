@@ -44,7 +44,7 @@ py model.py
 ```
 
 > [!NOTE]  
-> Si eres un desarrollador y quieres aportar al proyecto recuerde que debe cambiar el interpete de python al del entorno virtual Ctrl + Shift + Python Seleccionar Interprete y escoges el del entorno virtual Venv
+> Si eres un desarrollador y quieres aportar al proyecto recuerde que debe cambiar el interpete de python al del entorno virtual Ctrl + Shift + P,  Python Seleccionar Interprete y escoges el del entorno virtual Venv
 
 ## Autores ✒️
 
