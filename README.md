@@ -44,7 +44,7 @@ py model.py
 ```
 
 > [!NOTE]  
-> Si eres un desarrollador y quieres aportar al proyecto recuerde que debe cambiar el interpete de python al del entorno virtual Ctrl + Shift + Python Seleccionar Interprete y escoges el del entorno virtual Venv
+> Si eres un desarrollador y quieres aportar al proyecto recuerde que debe cambiar el interpete de python al del entorno virtual Ctrl + Shift + P,  Python Seleccionar Interprete y escoges el del entorno virtual Venv
 
 > [!NOTE]
 > En caso de no tener previamente un dataseet hecho para entrenar al modelo te recomiendo usar cortador.py y createCsv.py para picar los audios en 30 segundos, guardarlos en una carpeta que sera la encargada de clasificarlo con la ayuda del cortador.py y el createCsv.py solo se encargara de leer la carpeta Sound y create el csv de tu dataseet para entrenar el modelo
