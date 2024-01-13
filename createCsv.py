@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import os
 import uuid
 
@@ -42,7 +43,7 @@ with open(csv_file, 'w', newline='', encoding='utf-8') as file:
 
                 # Generar el ID de combinación utilizando una parte del nombre del archivo que sea la misma para todos los archivos que forman parte del mismo audio
                 base_name = "_".join(audio_file.split("_")[:-1])
-                combination_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, base_name))
+                combination_id = int(hashlib.sha256(base_name.encode()).hexdigest(), 16) % 1000000
 
                 # Almacenar la información del archivo y su ID de combinación en el diccionario
                 if combination_id not in file_combinations:
