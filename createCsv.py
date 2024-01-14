@@ -29,7 +29,7 @@ with open(csv_file, 'w', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
 
     # Escribir encabezados en el archivo CSV
-    writer.writerow(["ID", "Clasificación", "SplitId", "Nombre de archivo", "Tamaño"])
+    writer.writerow(["ID", "Clasificación", "SplitId", "Nombre-de-archivo", "Tamaño"])
 
     # Escribir información de cada archivo en el archivo CSV
     for classification_folder in classification_folders:
