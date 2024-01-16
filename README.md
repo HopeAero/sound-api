@@ -43,8 +43,27 @@ _Luego ejecutar el siguiente comando en consola para ejecutar el proyecto_
 py model.py
 ```
 
+_Para ejecutar el backend mi compa ejecute este comando_
+
+```
+uvicorn app.main:app --reload
+```
+
+_Recuerde crear un .env_
+
+```
+#Nota esto es los datos para conectarse a la base de datos de docker
+
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_SERVER=localhost
+POSTGRES_PORT=5433
+POSTGRES_DB=nombre de tu db
+
+```
+
 > [!NOTE]  
-> Si eres un desarrollador y quieres aportar al proyecto recuerde que debe cambiar el interpete de python al del entorno virtual Ctrl + Shift + P,  Python Seleccionar Interprete y escoges el del entorno virtual Venv
+> Si eres un desarrollador y quieres aportar al proyecto recuerde que debe cambiar el interpete de python al del entorno virtual Ctrl + Shift + P, Python Seleccionar Interprete y escoges el del entorno virtual Venv
 
 > [!NOTE]
 > En caso de no tener previamente un dataseet hecho para entrenar al modelo te recomiendo usar cortador.py y createCsv.py para picar los audios en 30 segundos, guardarlos en una carpeta que sera la encargada de clasificarlo con la ayuda del cortador.py y el createCsv.py solo se encargara de leer la carpeta Sound y create el csv de tu dataseet para entrenar el modelo

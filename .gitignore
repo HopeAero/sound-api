@@ -1,3 +1,7 @@
 venv/
 sound/*
 metadata/
+assets/
+prueba.py
+__pycache__/
+.env
