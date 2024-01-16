@@ -28,7 +28,7 @@ def class_names_from_csv(class_map_csv_text):
 class_map_path = model.class_map_path().numpy()
 class_names = class_names_from_csv(tf.io.read_file(class_map_path).numpy().decode('utf-8'))
 
-audio_path = '../sound/Musica/y2mate.com - AJA BANDIDO Calipso Guayanes_1.wav'
+audio_path = '../sound/Animal/Jaguar_2.wav'
 
 # Cargar el archivo de audio
 audio, sample_rate = sf.read(audio_path)
@@ -51,4 +51,6 @@ if len(waveform) < 3 * 16000:
 
 # Ejecutar el modelo y verificar la salida
 scores, embeddings, log_mel_spectrogram = model(waveform)
-print(class_names[scores.numpy().mean(axis=0).argmax()])
+print('')
+classification = class_names[scores.numpy().mean(axis=0).argmax()]
+print("La clasificación del sonido es:", classification)
