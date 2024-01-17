@@ -1,7 +1,11 @@
 from typing import Union, Annotated
 from fastapi import FastAPI, File, UploadFile
 from .config.config import settings
-from app.models import authors, sounds, works, publications
+from .routers.works import works as works_router
+from .routers.authors import authors as authors_router
+from .routers.publications import publications as publications_router
+from .routers.multimedia import sounds as multimedia_router
+from app.models import authors, multimedia, works, publications
 from .db.session import engine, Base, SessionLocal
 
 
@@ -12,6 +16,13 @@ def start_application():
 
 
 app = start_application()
+
+app.include_router(works_router)
+app.include_router(authors_router)
+app.include_router(publications_router)
+app.include_router(multimedia_router)
+
+
 
 @app.get("/")
 def home():

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 
-from app.db import SessionLocal
+from app.db.session import SessionLocal
 from app.schema import publications as schemas
-from app.db import get_db
+from app.db.session import get_db
 from app.services import publications as service
 
 
