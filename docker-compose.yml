@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: postgres
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: nest-pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  #meilisearch:
+  #  image: getmeili/meilisearch
+  #  environment:
+  #    MEILI_NO_ANALYTICS: 'true'
+  #  restart: always
+  #  ports:
+  #    - '7700:7700'
+  #  volumes:
+  #    - ./_volumes/meilisearch/data.ms:/data.ms:cached
+  #  depends_on:
+  #    - db
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
