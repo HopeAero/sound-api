@@ -10,20 +10,20 @@ from app.models.multimedia import Sound as Model
 from app.schema import sounds as schemas
 
 
-def get_image(db: Session, id: str):
+def get_sound(db: Session, id: str):
     return db.query(Model).filter(Model.id == id).first()
 
 
-def get_images_by_tag(db: Session, tag: str):
+def get_sound_by_tag(db: Session, tag: str):
     print(tag)
     return db.query(Model).filter(Model.tag == tag).all()
 
 
-def get_images(db: Session, skip: int = 0, limit: int = 100):
+def get_sounds(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Model).offset(skip).limit(limit).all()
 
 
-def create_image(db: Session, sound: schemas.SoundCreate):
+def create_sound(db: Session, sound: schemas.SoundCreate):
     db_sound = Model(**sound.model_dump())
     db.add(db_sound)
     db.commit()
