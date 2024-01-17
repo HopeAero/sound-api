@@ -79,6 +79,6 @@ def save_sound(
         source = sound_path,  
     )
 
-    db_image = create_image(db, image)
+    db_image = create_sound(db, image)
 
     return db_image
