@@ -10,7 +10,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 sound_folder = os.path.join(current_dir, "../sound")
 
 # Ruta del directorio "metadata"
-metadata_dir = os.path.join(current_dir, "app", "metadata")
+metadata_dir = os.path.join(current_dir, "metadata")
 
 # Crear el directorio "metadata" si no existe
 os.makedirs(metadata_dir, exist_ok=True)
