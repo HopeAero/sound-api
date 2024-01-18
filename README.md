@@ -40,12 +40,15 @@ pip install -r requirements.txt
 _Luego ejecutar el siguiente comando en consola para ejecutar el proyecto_
 
 ```
-py model.py
+cd app
+py training_model.py
 ```
 
 _Para ejecutar el backend mi compa ejecute este comando_
 
 ```
+#Desde la carpeta raiz del proyecto
+
 uvicorn app.main:app --reload
 ```
 
