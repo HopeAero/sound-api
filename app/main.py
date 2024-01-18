@@ -27,11 +27,3 @@ app.include_router(multimedia_router)
 @app.get("/")
 def home():
     return {"msg":"Hello FastAPI🚀"}
-
-@app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile):
-    return {"filename": file.filename}
-
-@app.get("/song")
-async def get_song():
-    return {"song": "song"}

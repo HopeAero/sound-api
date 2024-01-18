@@ -11,20 +11,9 @@ class Sound(Base):
     description = Column(Text)
     tag = Column(
         Enum(
-            "music",
+            "ambiental",
             "animal",
-            "battles",
-            "bookcovers",
-            "book_pages",
-            "foods",
-            "landscapes",
-            "maps",
-            "paintings",
-            "people",
-            "plants",
-            "rivers",
-            "sculptures",
-            "stamps",
+            "musica",
             name="sound-category",
         ),
     )

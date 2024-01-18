@@ -7,10 +7,10 @@ import uuid
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Ruta de la carpeta "sound"
-sound_folder = os.path.join(os.path.dirname(current_dir), "sound")
+sound_folder = os.path.join(current_dir, "../sound")
 
 # Ruta del directorio "metadata"
-metadata_dir = os.path.join(os.path.dirname(current_dir), "metadata")
+metadata_dir = os.path.join(current_dir, "app", "metadata")
 
 # Crear el directorio "metadata" si no existe
 os.makedirs(metadata_dir, exist_ok=True)
@@ -29,7 +29,7 @@ with open(csv_file, 'w', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
 
     # Escribir encabezados en el archivo CSV
-    writer.writerow(["ID", "Clasificación", "SplitId", "Nombre-de-archivo", "Tamaño"])
+    writer.writerow(["id", "clasificación", "splitId", "nombre-de-archivo", "tamaño"])
 
     # Escribir información de cada archivo en el archivo CSV
     for classification_folder in classification_folders:

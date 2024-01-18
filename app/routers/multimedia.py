@@ -5,29 +5,27 @@ from fastapi.responses import JSONResponse, FileResponse
 
 from enum import Enum
 import io
-
+import os
 from app.db.session import SessionLocal
 from app.db.session import get_db
 from app.services import multimedia as service
 from app.schema.sounds import Sound as schemas
 
+import librosa
+import numpy as np
+import tensorflow as tf
+from keras.models import load_model
+import pandas as pd
+import tempfile
+
+
+
 sounds = APIRouter(prefix="/sounds", tags=["sounds"])
 
 class TagEnum(str, Enum):
-    music = "music"
+    ambiental = "ambiental"
     animal = "animal"
-    battles = "battles"
-    bookcovers = "bookcovers"
-    book_pages = "book_pages"
-    foods = "foods"
-    landscapes = "landscapes"
-    maps = "maps"
-    paintings = "paintings"
-    people = "people"
-    plants = "plants"
-    rivers = "rivers"
-    sculptures = "sculptures"
-    stamps = "stamps"
+    musica = "musica"
 
 @sounds.get(
     "/",
@@ -64,6 +62,52 @@ async def get_sound_file(id: str, db: SessionLocal = Depends(get_db)):
     sound = service.get_sound(db, id) 
     return FileResponse(sound.source)
 
+@sounds.post("/classify", description="Classify an sound")
+async def classify_sound(
+    file: UploadFile = File(...), db: SessionLocal = Depends(get_db)
+):
+    model = load_model('app/model/audio_classification_model.h5')
+    target_shape = (128, 128)
+    df = pd.read_csv('app/metadata/sound_metadata.csv')
+    # Obtener las clases únicas
+    classes = df['clasificación'].unique().tolist()
+    
+    try:
+        file_contents = await file.read()
+        temp_file = tempfile.NamedTemporaryFile(delete=False)
+        
+        temp_file.write(file_contents)
+        temp_file.close()
+        
+        class_probabilities, predicted_class_index = service.test_audio(temp_file.name, model, target_shape)
+        
+        for i, class_label in enumerate(classes):
+            probability = class_probabilities[i]
+            print(f'Clase: {class_label}, Probabilidad: {probability:.4f}')
+
+        # Calculate and display the predicted class and accuracy
+        predicted_class = classes[predicted_class_index]
+        accuracy = class_probabilities[predicted_class_index]
+        
+        print(f'El audio se clasifica como: {predicted_class}')
+        print(f'Precision: {accuracy:.4f}')
+
+        return JSONResponse(
+            status_code=200,
+            content={
+                "message": "Sound successfully classified",
+                "category": f"El audio se clasifica como: {predicted_class} con una precisión de {accuracy:.4f}",
+            },
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": str(e)},
+        )
+    finally:
+        # Elimina el archivo temporal
+        os.unlink(temp_file.name)
+
 @sounds.post("/", description="Upload an sound")
 async def create_sound(
     id: UUID = Form(...),
@@ -79,6 +123,17 @@ async def create_sound(
     db: SessionLocal = Depends(get_db),
 ):
     try:
+        
+        model = load_model('app/model/audio_classification_model.h5')
+        target_shape = (128, 128)
+        df = pd.read_csv('app/metadata/sound_metadata.csv')
+        # Obtener las clases únicas
+        classes = df['clasificación'].unique().tolist()
+        
+        predicted_class, accuracy = service.predict_sound(file, model, target_shape, classes)
+        
+        tag = predicted_class
+
         db_sound = service.save_sound(
             db,
             id,

@@ -1,36 +1,51 @@
 import librosa
 import numpy as np
+import tensorflow as tf
 from keras.models import load_model
+import pandas as pd
 
-def predecir_audio(audio_path):
-    model = load_model('model.h5')
-    class_names = {0: "Ambiental", 1: "Animal", 2: "Musica"}
+# Load the saved model
+model = load_model('model/audio_classification_model.h5')
 
-    # Cargamos el audio
-    audio, sr = librosa.load(audio_path, sr=None)
+# Define the target shape for input spectrograms
+target_shape = (128, 128)
 
-    # Preprocesamos el audio
-    melspec = librosa.feature.melspectrogram(y=audio, sr=sr, n_fft=2048, hop_length=512, n_mels=128)
-    melspec = librosa.power_to_db(melspec).astype(np.float32)
+df = pd.read_csv('metadata/sound_metadata.csv')
 
-    # Aseguramos que el espectrograma tenga la misma forma que los datos de entrada del modelo
-    melspec = melspec[:128, :1292]
-    if melspec.shape != (128, 1292):
-        melspec = np.pad(melspec, pad_width=((0, 128 - melspec.shape[0]), (0, 1292 - melspec.shape[1])))
+# Obtener las clases únicas
+classes = df['clasificación'].unique().tolist()
 
-    # Agregamos una dimensión extra para el canal
-    melspec = melspec[..., np.newaxis]
 
-    # Hacemos la predicción con el modelo
-    prediction = model.predict(np.array([melspec]))
-    print(prediction)
+# Function to preprocess and classify an audio file
+def test_audio(file_path, model):
+    # Load and preprocess the audio file
+    audio_data, sample_rate = librosa.load(file_path, sr=None)
+    mel_spectrogram = librosa.feature.melspectrogram(y=audio_data, sr=sample_rate)
+    mel_spectrogram = tf.image.resize(np.expand_dims(mel_spectrogram, axis=-1), target_shape)
+    mel_spectrogram = tf.reshape(mel_spectrogram, (1,) + target_shape + (1,))
+    
+    # Make predictions
+    predictions = model.predict(mel_spectrogram)
+    
+    # Get the class probabilities
+    class_probabilities = predictions[0]
+    
+    # Get the predicted class index
+    predicted_class_index = np.argmax(class_probabilities)
+    
+    return class_probabilities, predicted_class_index
 
-    # La predicción es un vector de probabilidades, así que tomamos la clase con la probabilidad más alta
-    predicted_class = np.argmax(prediction)
+# Test an audio file
+test_audio_file = '../sound/musica/y2mate.com - el burro viejo calipso de guayana_1.wav'
+class_probabilities, predicted_class_index = test_audio(test_audio_file, model)
 
-    return [predicted_class]
+# Display results for all classes
+for i, class_label in enumerate(classes):
+    probability = class_probabilities[i]
+    print(f'Clase: {class_label}, Probabilidad: {probability:.4f}')
 
-audio_path = 'sound/Ambiental/Rio_1.wav'
-
-predicted_class = predecir_audio(audio_path)
-print(f"La clase predicha es: {predicted_class}")
+# Calculate and display the predicted class and accuracy
+predicted_class = classes[predicted_class_index]
+accuracy = class_probabilities[predicted_class_index]
+print(f'El audio se clasifica como: {predicted_class}')
+print(f'Precision: {accuracy:.4f}')

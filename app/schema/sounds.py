@@ -5,20 +5,9 @@ from uuid import UUID
 
 
 class TagEnum(str, Enum):
-    animals = "animals"
-    architecture = "architecture"
-    battles = "battles"
-    bookcovers = "bookcovers"
-    book_pages = "book_pages"
-    foods = "foods"
-    landscapes = "landscapes"
-    maps = "maps"
-    paintings = "paintings"
-    people = "people"
-    plants = "plants"
-    rivers = "rivers"
-    sculptures = "sculptures"
-    stamps = "stamps"
+    ambiental = "ambiental"
+    animal = "animal"
+    musica = "musica"
 
 
 # base
