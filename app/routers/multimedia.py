@@ -127,11 +127,6 @@ async def create_sound(
     db: SessionLocal = Depends(get_db),
 ):
     try:
-        model = load_model('app/model/audio_classification_model.h5')
-        target_shape = (128, 128)
-        df = pd.read_csv('app/metadata/sound_metadata.csv')
-        # Obtener las clases únicas
-        classes = df['clasificación'].unique().tolist()
         
         file_contents = await file.read()
                         
@@ -146,9 +141,7 @@ async def create_sound(
             
         print(f'Archivo guardado en: {file_path}')
         
-        predicted_class, accuracy = service.predict_sound(file_path, model, target_shape, classes)
-                
-        tag = predicted_class    
+                   
         
         source = f"http://127.0.0.1:8000/{file_path}"          
             
