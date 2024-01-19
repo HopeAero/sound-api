@@ -59,8 +59,9 @@ def get_sounds(tag: str, db: SessionLocal = Depends(get_db)):
 
 @sounds.get("/{id}/file", description="Get a sound file by id")
 async def get_sound_file(id: str, db: SessionLocal = Depends(get_db)):
-    sound = service.get_sound(db, id) 
-    return FileResponse(sound.source)
+    sound = service.get_sound(db, id)
+    local_file_path = sound.source.replace('http://127.0.0.1:8000/', '')  # Convertir la URL en una ruta de archivo local
+    return FileResponse(local_file_path)
 
 @sounds.post("/classify", description="Classify an sound")
 async def classify_sound(
@@ -131,7 +132,7 @@ async def create_sound(
         
         file_contents = await file.read()
                         
-        file_path = f"app/uploads/sound/{tag}/{id}/{file.filename}"
+        file_path = f"app/uploads/sound/{file.filename}"
 
         # Crea el directorio si no existe
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
