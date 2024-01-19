@@ -85,11 +85,9 @@ def save_sound(
     tag: str,
     copyright: str,
     reference: str,
-    file: UploadFile = File(...),
+    source: str,
 ):
-    sound_path = f"app/sounds/{tag}/{id}.wav"
-    with Path(sound_path).open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+   
 
 
     sound = schemas.SoundCreate.model_construct(
@@ -102,7 +100,7 @@ def save_sound(
         tag = tag,
         copyright = copyright,
         reference = reference,
-        source = sound_path,  
+        source = source,  
     )
 
     db_sound = create_sound(db, sound)

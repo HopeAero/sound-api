@@ -8,6 +8,10 @@ from .routers.multimedia import sounds as multimedia_router
 from app.models import authors, multimedia, works, publications
 from .db.session import engine, Base, SessionLocal
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
+
+
 
 
 def start_application():
@@ -17,6 +21,14 @@ def start_application():
 
 
 app = start_application()
+
+
+
+uploads_directory = "app/uploads"
+if not os.path.exists(uploads_directory):
+    os.makedirs(uploads_directory)
+
+app.mount("/app/uploads", StaticFiles(directory=uploads_directory), name="uploads")
 
 app.include_router(works_router)
 app.include_router(authors_router)

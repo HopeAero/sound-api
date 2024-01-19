@@ -123,17 +123,31 @@ async def create_sound(
     db: SessionLocal = Depends(get_db),
 ):
     try:
-        
         model = load_model('app/model/audio_classification_model.h5')
         target_shape = (128, 128)
         df = pd.read_csv('app/metadata/sound_metadata.csv')
         # Obtener las clases únicas
         classes = df['clasificación'].unique().tolist()
         
-        predicted_class, accuracy = service.predict_sound(file, model, target_shape, classes)
-        
-        tag = predicted_class
+        file_contents = await file.read()
+                        
+        file_path = f"app/uploads/sound/{tag}/{id}/{file.filename}"
 
+        # Crea el directorio si no existe
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+        # Guarda el contenido del archivo en el disco
+        with open(file_path, "wb") as f:
+            f.write(file_contents)
+            
+        print(f'Archivo guardado en: {file_path}')
+        
+        predicted_class, accuracy = service.predict_sound(file_path, model, target_shape, classes)
+                
+        tag = predicted_class    
+        
+        source = f"http://127.0.0.1:8000/{file_path}"          
+            
         db_sound = service.save_sound(
             db,
             id,
@@ -145,7 +159,7 @@ async def create_sound(
             tag,
             copyright,
             reference,
-            file,
+            source,
         )
         return {"message": "Sound successfully created", "sound": db_sound}
 
