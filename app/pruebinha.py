@@ -36,7 +36,7 @@ def test_audio(file_path, model):
     return class_probabilities, predicted_class_index
 
 # Test an audio file
-test_audio_file = '../sound/musica/y2mate.com - el burro viejo calipso de guayana_1.wav'
+test_audio_file = '../sound/narracion/20poemastranvia_06_girondo_64kb.wav'
 class_probabilities, predicted_class_index = test_audio(test_audio_file, model)
 
 # Display results for all classes

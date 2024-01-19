@@ -39,6 +39,9 @@ class TagEnum(str, Enum):
     ambiental = "ambiental"
     animal = "animal"
     musica = "musica"
+    narracion = "narracion"
+    gato = "gato"
+    perro = "perro"
     
 
 def test_audio(file_path, model, target_shape):

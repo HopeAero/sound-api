@@ -8,6 +8,9 @@ class TagEnum(str, Enum):
     ambiental = "ambiental"
     animal = "animal"
     musica = "musica"
+    narracion = "narracion"
+    gato = "gato"
+    perro = "perro"
 
 
 # base

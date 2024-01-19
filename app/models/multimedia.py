@@ -13,7 +13,10 @@ class Sound(Base):
         Enum(
             "ambiental",
             "animal",
+            "narracion",
             "musica",
+            "gato",
+            "perro",
             name="sound-category",
         ),
     )
